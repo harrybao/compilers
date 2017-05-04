@@ -49,10 +49,14 @@ int main(int argc,char *argv[])
         else if((c>='0'&&c<='9')){
 			t[i++]=c;
 			c=getchar();
-			while((c>='0'&&c<='9')||c=='.'){ 
-				t[i++]=c;
-				c = getchar();
-			}
+      if(c=='.'){
+        t[i++]=c;
+        c=getchar();
+        while((c>='0'&&c<='9')){ 
+          t[i++]=c;
+          c = getchar();
+        }
+      }
 			if(c==' '||c=='\n'||c=='\t'||c==';'){
 				printf("2  -| %s \n",t);
 			}
