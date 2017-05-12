@@ -1,5 +1,7 @@
 digit [+-][0-9]+|[0-9]+|\.[0-9]+
 id [A-Za-z][A-Za-z0-9]*
+string \'[^\']+\'
+notes \{[^\}]+\}
 %%
 [ |\t|\n]+
 "var" {printf("21 -| %s\n",yytext);}
@@ -17,6 +19,8 @@ id [A-Za-z][A-Za-z0-9]*
 "const" {printf("33 -| %s\n",yytext);}
 {id} {printf("1  -| %s\n",yytext);}
 {digit}+ {printf("2  -| %s\n",yytext);}
+{string} {printf("50 -| %s\n",yytext);}
+{notes} {printf("60 -| %s\n","Notes");}
 "+" {printf("3  -| %s\n",yytext);}
 "-" {printf("4  -| %s\n",yytext);}
 "*" {printf("5  -| %s\n",yytext);}
