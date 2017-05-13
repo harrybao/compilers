@@ -7,7 +7,7 @@ int main(int argc,char *argv[])
 	int k1=0,k2=0;
     char table[13][13]={"var","if","then","else","while","for","begin","writeln","procedure","end","do","call","const"};
     char c;
-	char t[20]={"\0"};			
+	char t[20000]={"\0"};			
     freopen(argv[1],"r",stdin);
     c=getchar();
     while(c!=EOF){
@@ -35,6 +35,10 @@ int main(int argc,char *argv[])
 				printf("17 -| ; \n");
 			if(c==',')
 				printf("18 -| , \n");
+			if(c=='(')
+				printf("13 -| ( \n");
+			if(c==')')
+				printf("14 -| ) \n");
 			if(c=='.'||c=='$'||c=='#'||c=='"'||c=='!'||c=='@'||c=='|'||c=='?'||c=='$'||c=='%'||c=='^'||c=='&')
 				printf("100-| error\n");
 			c=getchar();
@@ -49,14 +53,10 @@ int main(int argc,char *argv[])
         else if((c>='0'&&c<='9')){
 			t[i++]=c;
 			c=getchar();
-      if(c=='.'){
-        t[i++]=c;
-        c=getchar();
-        while((c>='0'&&c<='9')){ 
-          t[i++]=c;
-          c = getchar();
-        }
-      }
+			while((c>='0'&&c<='9')||c=='.'){ 
+				t[i++]=c;
+				c = getchar();
+			}
 			if(c==' '||c=='\n'||c=='\t'||c==';'){
 				printf("2  -| %s \n",t);
 			}
@@ -186,20 +186,46 @@ int main(int argc,char *argv[])
 			}
 		}
 		else if(c=='{'){
+			t[i++]=c;
 			c=getchar();
-			if(c==' '||c=='\n'||c=='\t'){
-				printf("15 -| { \n");
+			while(c!='}'||c=='\n')
+			{
+				t[i++]=c;
+				c=getchar();
+			}	
+			if(c=='}'){
+				t[i++]=c;c=getchar();
+				printf("60 -| Notes \n");
+				for(j=0;j<=i;j++)
+					t[j]='\0';
+				i=0;
 			}
 			else{ 
 				printf("100-| error\n");
 			}
 		}
-		else if(c=='}'){
+		else if(c=='\''){
+			t[i++]=c;
 			c=getchar();
-			if(c==' '||c=='\n'||c=='\t'){
-				printf("16 -| } \n");
+			while(c!='\''){
+				t[i++]=c;
+				c=getchar();
 			}
-			else{ 
+			if(c=='\''){
+				t[i++]=c;
+				c=getchar();
+				printf("50 -| %s \n",t);
+				for(j=0;j<=i;j++)
+					t[j]='\0';
+				i=0;
+			}
+			else if(c=='\n'){ 
+				printf("100-| error\n");
+				for(j=0;j<=i;j++)
+					t[j]='\0';
+				i=0;
+			}
+			else{
 				printf("100-| error\n");
 			}
 		}
@@ -221,10 +247,10 @@ int main(int argc,char *argv[])
 				printf("100-| error\n");
 			}
 		}
-		else if(c==' '){
+		else if(c=='\"'){
 			c=getchar();
-			if(c==' '||c=='\n'||c=='\t'){
-				printf("19 -|   \n");
+			if(c=='\"'||c=='\n'||c=='\t'){
+				printf("19 -| \" \n");
 			}
 			else{ 
 				printf("100-| error\n");
