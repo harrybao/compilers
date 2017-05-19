@@ -79,7 +79,6 @@ void F()
 		}  
         if(str[j]==')')  
         {  
-        	cout<<"F--->(E)    " <<endl;
             j++;   
         }else{  
             cout<<"\n分析失败!"<<endl;  
