@@ -5,10 +5,10 @@ using namespace std;
 
 char str[10];  
 int j=0;  
-void E();           //E->TX;  
-void X();           //X->+TX | e  
-void T();           //T->FY  
-void Y();           //Y->*FY | e  
+void E();           //E->TE';  
+void X();           //E'->+TE' | e  
+void T();           //T->FT'  
+void Y();           //T'->*FT' | e  
 void F();           //F->(E) | i  
 int main()  
 {  
