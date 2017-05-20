@@ -48,7 +48,6 @@ def F():
 		exit(0)
 if __name__=='__main__':
 	str=input('please input string:')
-	leng=len(str)
 	str=str+'$'
 	E()
 	if(str[j]=='$'):
