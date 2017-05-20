@@ -6,7 +6,7 @@ def E():
     X()
 def X():
     global j
-    if(str[j]=='+'):
+    if(str1[j]=='+'):
         print "E' -->  +TE'   Mate to +"
         j+=1
         T()
@@ -19,7 +19,7 @@ def T():
     Y()
 def Y():
     global j
-    if(str[j]=='*'):
+    if(str1[j]=='*'):
         print "T' -->  *FT'   Mate to *"
         j+=1
         F()
@@ -28,17 +28,17 @@ def Y():
         print "T' -->  ε"
 def F():
     global j
-    if(str[j]=='i'):
+    if(str1[j]=='i'):
         print "F -->  i       Mate to i"
         j+=1
-    elif(str[j]=='('):
+    elif(str1[j]=='('):
         print "F -->  (E)"
         j+=1
         E()
-        while(str[j]!=')'):
+        while(str1[j]!=')'):
             print "[ERROR]: Never find ')'!"
             exit(0)
-	    if(str[j]==')'):
+	    if(str1[j]==')'):
 		j+=1
 	    else:
         	print "[ERROR]: Alalyzing errors!"
@@ -47,8 +47,8 @@ def F():
         print "[ERROR}: Alalyzing errors!"
         exit(0)
 if __name__=='__main__':
-    str=input('please input string:')
-    str=str+'$'
+    str1=input('please input string:')
+    str1=str1+'$'
     E()
-    if(str[j]=='$'):
+    if(str1[j]=='$'):
         print "[RIGHT]: The input is true"
