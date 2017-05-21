@@ -1,9 +1,14 @@
 #coding:utf-8
-j=0
+
 def E():
-    print "E -->  TE'"
-    T()
-    X()
+    global j
+    if(str1[j]=='i' or str1[j]=='('):
+        print "E -->  TE'"
+        T()
+        X()
+    else:
+        print "[ERROR]: Alalyzing is Flase!"
+
 def X():
     global j
     if(str1[j]=='+'):
@@ -13,10 +18,16 @@ def X():
         X()
     else:
         print "E' -->  ε"
+
 def T():
-    print "T -->  FT'"
-    F()
-    Y()
+    global j
+    if(str1[j]=='i' or str1[j]=='('):
+        print "T -->  FT'"
+        F()
+        Y()
+    else:
+        print "[ERROR]: Alalyzing is Flase!"
+
 def Y():
     global j
     if(str1[j]=='*'):
@@ -26,6 +37,7 @@ def Y():
         Y()
     else:
         print "T' -->  ε"
+
 def F():
     global j
     if(str1[j]=='i'):
@@ -38,17 +50,19 @@ def F():
         while(str1[j]!=')'):
             print "[ERROR]: Never find ')'!"
             exit(0)
-	    if(str1[j]==')'):
-		j+=1
-	    else:
-        	print "[ERROR]: Alalyzing errors!"
-		exit(0)
+        if(str1[j]==')'):
+            j+=1
+        else:
+            print "[ERROR]: Alalyzing errors!"
+            exit(0)
     else:
         print "[ERROR}: Alalyzing errors!"
         exit(0)
+
 if __name__=='__main__':
     str1=input('please input string:')
     str1=str1+'$'
+    j=0
     E()
     if(str1[j]=='$'):
         print "[RIGHT]: The input is true"

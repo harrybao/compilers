@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-char str[10];  
+char str[100];  
 int j=0;  
 void E();           //E->TE';  
 void X();           //E'->+TE' | e  
@@ -20,8 +20,6 @@ int main()
     str[len+1]='\0';  
     E();  
     cout <<"正确语句！"<<endl;  
-    strcpy(str,"");  
-    j=0;   
 }  
 void E()  
 {  
@@ -33,8 +31,7 @@ void X()
 {  
     if(str[j]=='+')  
     {  
-    	cout<<"E'--->+TE'   " <<endl;
-    	cout<<"    匹配+"<<endl;
+    	cout<<"E'--->+TE'       匹配+" <<endl;
         j++;  
         T();  
         X();  
@@ -52,8 +49,7 @@ void Y()
 {  
     if(str[j]=='*')  
     {  
-    	cout<<"T--->*FT'    " <<endl;
-    	cout<<"    匹配*"<<endl;
+    	cout<<"T--->*FT'        匹配*" <<endl;
         j++;  
         F();  
         Y();  
@@ -64,8 +60,7 @@ void F()
 {  
     if(str[j]=='i')  
     {  
-    	cout<<"F--->i       " <<endl;
-    	cout<<"    匹配i"<<endl;
+    	cout<<"F--->i           匹配i" <<endl;
         j++;  
     }  
     else if (str[j]=='(')  
