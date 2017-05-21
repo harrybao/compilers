@@ -8,6 +8,7 @@ def E():
         X()
     else:
         print "[ERROR]: Alalyzing is Flase!"
+        exit(0)
 
 def X():
     global j
@@ -27,6 +28,7 @@ def T():
         Y()
     else:
         print "[ERROR]: Alalyzing is Flase!"
+        exit(0)
 
 def Y():
     global j
