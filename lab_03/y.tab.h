@@ -27,6 +27,7 @@
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
 
+
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
