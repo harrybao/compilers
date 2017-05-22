@@ -7,7 +7,7 @@ def E():
         T()
         X()
     else:
-        print "[ERROR]: Never find 'i' or '('!"
+        print "[ERROR]: Alalyzing is Flase!"
         exit(0)
 
 def X():
@@ -21,9 +21,14 @@ def X():
         print "E' -->  ε"
 
 def T():
-    print "T -->  FT'"
-    F()
-    Y()
+    global k
+    if(str1[k]=='i' or str1[k]=='('):
+        print "T -->  FT'"
+        F()
+        Y()
+    else:
+        print "[ERROR]: Alalyzing is Flase!"
+        exit(0)
 
 def Y():
     global k
@@ -52,6 +57,12 @@ def F():
             exit(0)
         if(str1[k]==')'):
             k+=1
+        else:
+            print "[ERROR]: Alalyzing errors!"
+            exit(0)
+    else:
+        print "[ERROR}: Alalyzing errors!"
+        exit(0)
 
 if __name__=='__main__':
     str1=input('please input string:')
