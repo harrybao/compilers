@@ -66,7 +66,7 @@ def F():
             F()
 
 if __name__=='__main__':
-    str1=input('please input string:')
+    str1=raw_input('please input string:')
     str1=str1+'$'
     k=0
     temp=0
