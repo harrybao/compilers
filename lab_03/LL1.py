@@ -61,7 +61,8 @@ def error():
 	i+=1
 
 if __name__ == '__main__':
-	raw_input("Input the syant:")
+	in1=raw_input("Input the syant:")
+	z=chr(in1)
 	i=0
 	z=0
 	n=0
