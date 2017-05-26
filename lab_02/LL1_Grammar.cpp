@@ -4,7 +4,7 @@
 using namespace std;
 
 char str[100];  
-int j=0;  
+int j=0,temp=0;  
 void E();           //E->TE';  
 void X();           //E'->+TE' | e  
 void T();           //T->FT'  
@@ -18,8 +18,15 @@ int main()
     len=strlen(str);  
     str[len]='#';  
     str[len+1]='\0';  
-    E();  
-    cout <<"正确语句！"<<endl;  
+    E();
+    if(str[j]=='#')
+    {
+        if(temp==0)
+            cout <<"输入的语法是正确的！"<<endl;
+        else
+            cout <<"输入的语法是错误的！" <<endl;
+    }  
+ 
 }  
 void E()  
 {  
@@ -32,7 +39,13 @@ void X()
     if(str[j]=='+')  
     {  
     	cout<<"E'--->+TE'       匹配+" <<endl;
-        j++;  
+        j++; 
+        if(str[j]!='i' && str[j]!='(')
+        {
+            cout<<"缺少运算量'i'或者'('"<<endl;
+            temp=1;
+            j++;
+        }
         T();  
         X();  
     }
@@ -50,7 +63,13 @@ void Y()
     if(str[j]=='*')  
     {  
     	cout<<"T--->*FT'        匹配*" <<endl;
-        j++;  
+        j++; 
+        if(str[j]!='i' && str[j]!='(')
+        {
+            cout<<"缺少运算量'i'或者'('"<<endl;
+            temp=1;
+            j++;
+        }
         F();  
         Y();  
     } else
@@ -61,27 +80,34 @@ void F()
     if(str[j]=='i')  
     {  
     	cout<<"F--->i           匹配i" <<endl;
-        j++;  
+        j++;
+        if(str[j]!='+' and str[j]!='*' and str[j]!=')' and str[j]!='#')
+        {
+            cout<<"缺少运算符'+'或'*'或')'"<<endl;
+            temp=1;
+            if(str[j]=='(' ||str[j]=='i')
+                F();
+        }  
     }  
     else if (str[j]=='(')  
     {   
-		cout<<"F--->(E)    " <<endl;   
+		cout<<"F--->(E)         匹配(" <<endl;   
         j++;  
         E();
 		while(str[j]!=')'){
-			cout<<"error:never find ')'"<<endl;
-			exit(0);
+			cout<<"没有匹配到')'"<<endl;
+            temp=1;
+			break;
 		}  
         if(str[j]==')')  
         {  
+			cout<<"F--->(E)         匹配)" <<endl;   
             j++;   
-        }else{  
-            cout<<"\n分析失败!"<<endl;  
-            exit (0);  
-        }  
+        }
     }   
     else{  
-        cout<<"分析失败!"<<endl;   
-        exit(0);  
+        cout<<"没有找到'i'或者'('"<<endl;
+        temp=1;   
+        j++;  
     }  
  }  
