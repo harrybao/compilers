@@ -48,6 +48,9 @@ def F():
             temp=1
             if(str1[k]=='(' or str1[k]=='i'):
                 F()
+            else:
+                k+=1
+                F()
     elif(str1[k]=='('):
         print "\033[0mF -->  (E)"
         k+=1
