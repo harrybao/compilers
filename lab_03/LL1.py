@@ -32,15 +32,15 @@ def LL1():
 		else:
 			error()
 	elif(c=='Y'):
-		if(a[i]=='+' or a[i]==')' or a[i]=='$'):
-			x.add_row([stack,a[i:], "T' -> ε"])
-			c=stack.pop()
-		elif(a[i]=='*'):
+		if(a[i]=='*'):
 			x.add_row([stack,a[i:], "T' -> *FT'"])
 			stack.append('Y')
 			stack.append('F')
 			stack.append('*')
 			c=stack.pop()
+		elif(a[i]=='+' or a[i]==')' or a[i]=='$'):
+			x.add_row([stack,a[i:], "T' -> ε"])
+			c=stack.pop()	
 		else:
 			error()
 	elif(c=='F'):
@@ -58,6 +58,7 @@ def LL1():
 			error()
 
 
+
 def error():
 	global i 
 	x.add_row([i+1,a[i], "error"])
@@ -73,11 +74,21 @@ if __name__ == '__main__':
 	x.align["Input"] = "r"
 	x.align["Action"] = "l"
 	stack=[]
-	stack.append('$')
 	stack.append('E')
+	x.add_row([stack,a[i:]," "])
 	c=stack.pop()
 	while(c!='$'):
 		if(c==a[i]):
+			if(c=='i'):
+				x.add_row([stack,a[i+1:],"Mate i"])
+			if(c=='+'):
+				x.add_row([stack,a[i+1:],"Mate +"])
+			if(c=='*'):
+				x.add_row([stack,a[i+1:],"Mate *"])
+			if(c=='('):
+				x.add_row([stack,a[i+1:],"Mate ("])
+			if(c==')'):
+				x.add_row([stack,a[i+1:],"Mate )"])
 			i+=1
 			c=stack.pop()
 		elif(a[i]=='$'):
