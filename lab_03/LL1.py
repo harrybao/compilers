@@ -67,13 +67,17 @@ def error():
 if __name__ == '__main__':
 	a=raw_input("Input Expression:")
 	a=a+'$'
-	i=0
+	for temp in a:
+		if(temp!='i' and temp!='+' and temp!='*' and temp!='(' and temp!=')' and temp!='$'):
+			print "You input is wrong!"
+			exit(0)
 	x = PrettyTable(["Stack", "Input", "Action"])
 	x.padding_width = 1
 	x.align["Stack"] = "l"
 	x.align["Input"] = "r"
 	x.align["Action"] = "l"
 	stack=[]
+	i=0
 	stack.append('E')
 	x.add_row([stack,a[i:]," "])
 	c=stack.pop()
