@@ -9,7 +9,6 @@ class Parser
 public:
     Parser();
     Parser(const Parser&);
-    Parser& operator =(const Parser&);
     friend ostream& operator<<(ostream& output,const Parser& rs);
     friend istream& operator>>(istream& input,Parser& rs);
     int Findid(char);
@@ -21,7 +20,6 @@ public:
     char RandChar();
     string GetSub(int,const string&,char);
     Parser& DelLeft(int);
-    Parser& DelSL();
     string First(char);
     string First(const string&);
     string Follow(char);
@@ -29,20 +27,16 @@ public:
     Parser& CreateTable();
     ~Parser();
     char Pop();
-    int Next(char,char);
+    int Mate(char,char);
     char Top();
     char Ip();
     Parser& Push(const string&);
-    int Display();
+    int Analysis();
 private:
-    int number;
-    string ter;
-    string non;
+    int num;
+    string ter,non,end,stack,instack;
     string *content;
-    string end;
     string *first;
     string *follow;
     string **table;
-    string stack;
-    string instack;
 };

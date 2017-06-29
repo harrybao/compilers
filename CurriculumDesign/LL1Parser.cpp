@@ -13,104 +13,88 @@ Parser::Parser(const Parser& rs)
      ter=rs.ter;
      non=rs.non;
      end=rs.end;
-     number=rs.number;
+     num=rs.num;
      content=new string[255];
      first=new string[255];
      follow=new string[255];
      table=new string *[255];
-     for(int i=0;i<=number;i++)
+     for(int i=0;i<=num;i++)
         content[i]=rs.content[i];
      FirstAndFollow();
      CreateTable();
 }
  
-Parser& Parser::operator =(const Parser& rs)
-{
-     ter=rs.ter;
-     non=rs.non;
-     end=rs.end;
-     number=rs.number;
-     content=new string[255];
-     first=new string[255];
-     follow=new string[255];
-     table=new string *[255];
-     for(int i=0;i<=number;i++)
-        content[i]=rs.content[i];
-     FirstAndFollow();
-    CreateTable();
-    return *this;
-}
 ostream& operator<<(ostream& output,const Parser& rs)
-    {
-        output<<"文法内容(共"<<rs.number<<"条):"<<endl;
-        int i=0;
-        while(i<rs.number)
-        {
-            output<<rs.content[i++]<<endl;
-        }
-        output<<"结 终 符:"<<rs.ter<<endl;
-        output<<"非结终符:"<<rs.non<<endl;
-        cout<<" FIRST "<<endl;
-        for(unsigned int j=0;j<rs.non.size();j++)
-            cout<<"FIRST("<<rs.non[j]<<") = {"<<rs.first[j]<<"}\t"<<endl;
-        cout<<" FOLLOW "<<endl;
-        for(unsigned int j=0;j<rs.non.size();j++)
-            cout<<"FOLLOW("<<rs.non[j]<<") = {"<<rs.follow[j]<<"}\t"<<endl;
-        output<<"预测分析表:"<<endl<<"\t";
-        for(unsigned int j=0;j<rs.ter.size();j++)
-            output<<rs.ter[j]<<"\t";
-        output<<"$"<<endl;
-        for(unsigned int j=0;j<rs.non.size();j++)
-        {
-            output<<rs.non[j]<<"\t";
-            for(unsigned int k=0;k<=rs.ter.size();k++)
-                cout<<rs.table[j][k]<<"\t";
-            output<<endl;
-        }
-        return output;
-    }
-    istream& operator>>(istream& input,Parser& rs)
-    {
-        unsigned int j=0;
-        char filename[255];
-        cout<<"请输入文件名:";
-        input>>filename;
-        ifstream infile(filename,ios::in);
-        if(!infile){
-            cout<<"无法打开文件！"<<endl;
-            exit(0);
-        }
-        while(1)
-        {   
-            unsigned int i=0;
-            infile>>rs.end;   
-            rs.content[j++]=rs.end;
-            if(infile.eof()) break;
-            while(i<rs.end.size())
-            {
-                if(rs.end[i]=='|'||rs.end[i]=='^');
-                else if(i==1||i==2) i++;
-                else if(rs.end[i]>='A'&&rs.end[i]<='Z'){
-                    if(std::string::npos==rs.non.find(rs.end[i])) rs.non.append(1,rs.end[i]);
-                }
-                else if(std::string::npos==rs.ter.find(rs.end[i])) rs.ter.append(1,rs.end[i]);
-                i++;
-            }
-        }
-        rs.number=j-1;
-        if(rs.Check()==0)
-        {
-            exit(0);
-        }
-        rs.FirstAndFollow();
-        rs.CreateTable();
-        return input;
-    } 
+{
+	output<<"文法内容(共"<<rs.num<<"条):"<<endl;
+	int i=0;
+	while(i<rs.num)
+	{
+		output<<rs.content[i++]<<endl;
+	}
+	output<<"结 终 符:"<<rs.ter<<endl;
+	output<<"非结终符:"<<rs.non<<endl;
+	cout<<"非终结符的FIRST集合 "<<endl;
+	for(unsigned int j=0;j<rs.non.size();j++)
+		cout<<"FIRST("<<rs.non[j]<<") = {"<<rs.first[j]<<"}\t"<<endl;
+	cout<<"非终结符的FOLLOW集合 "<<endl;
+	for(unsigned int j=0;j<rs.non.size();j++)
+		cout<<"FOLLOW("<<rs.non[j]<<") = {"<<rs.follow[j]<<"}\t"<<endl;
+	output<<"预测分析表:"<<endl<<"\t";
+	for(unsigned int j=0;j<rs.ter.size();j++)
+		output<<rs.ter[j]<<"\t";
+	output<<"$"<<endl;
+	for(unsigned int j=0;j<rs.non.size();j++)
+	{
+		output<<rs.non[j]<<"\t";
+		for(unsigned int k=0;k<=rs.ter.size();k++)
+			cout<<rs.table[j][k]<<"\t";
+		output<<endl;
+	}
+	return output;
+}
+istream& operator>>(istream& input,Parser& rs)
+{
+	unsigned int j=0;
+	char filename[255];
+	cout<<"请输入文件名:";
+	input>>filename;
+	ifstream infile(filename,ios::in);
+	if(!infile){
+		cout<<"无法打开文件！"<<endl;
+		exit(0);
+	}
+	while(1)
+	{   
+		unsigned int i=0;
+		infile>>rs.end;   
+		rs.content[j++]=rs.end;
+		if(infile.eof()) break;
+		while(i<rs.end.size())
+		{
+			if(rs.end[i]=='|'||rs.end[i]=='^');
+			else if(i==1||i==2) i++;
+			else if(rs.end[i]>='A'&&rs.end[i]<='Z'){
+				if(std::string::npos==rs.non.find(rs.end[i])) rs.non.append(1,rs.end[i]);
+			}
+			else if(std::string::npos==rs.ter.find(rs.end[i])) rs.ter.append(1,rs.end[i]);
+			i++;
+		}
+	}
+	rs.num=j-1;
+	if(rs.Check()==0)
+	{
+		exit(0);
+	}
+	rs.FirstAndFollow();
+	rs.CreateTable();
+	return input;
+} 
  
 int Parser::Findid(char a)
 {
     int i=0;
-    while(i<number)
+    while(i<num)
     {
         if(content[i][0]==a) return i;
         i++;
@@ -120,65 +104,21 @@ int Parser::Findid(char a)
  
 char Parser::RandChar()
 {
-    switch(rand()%25)
+    switch(rand()%3)
     {
     case 0:return 'A';
     case 1:return 'B';
     case 2:return 'C';
     case 3:return 'D';
-    case 4:return 'E';
-    case 5:return 'F';
-    case 6:return 'G';
-    case 7:return 'H';
-    case 8:return 'I';
-    case 9:return 'J';
-    case 10:return 'K';
-    case 11:return 'L';
-    case 12:return 'M';
-    case 13:return 'N';
-    case 14:return 'O';
-    case 15:return 'P';
-    case 16:return 'Q';
-    case 17:return 'R';
-    case 18:return 'S';
-    case 19:return 'T';
-    case 20:return 'U';
-    case 21:return 'V';
-    case 22:return 'W';
-    case 23:return 'X';
-    case 24:return 'Y';
-    case 25:return 'Z';
     }
-    return 'Z';
+    return 'D';
 }
  
 int Parser::Check()
 {
     unsigned int j=0;
     int i=0;
-    while(j<non.size())
-    {
-        int sig=1;
-        i=0;
-        while(i<number)
-        {
-            if(content[i++][0]==non[j]) 
-            {
-                sig=1;          
-                break;
-            }
-            sig=-1;
-        }
-        if(sig==-1)
-        {
-            cout<<"非终结符"<<non[j]<<"未使用推导！"<<endl;
-            return 0;
-        }
-        j++;
-    }
-    DelSL();
-    i=0;
-    while(i<number)
+    while(i<num)
     {
         if(content[i].size()<=3)
         {
@@ -212,73 +152,9 @@ int Parser::Check()
             DelLeft(i); 
         i++;
     }
-    j=0;
-    while(j<non.size())
-    {
-        int sig=1;
-        i=0;
-        while(i<number)
-        {
-            if(content[i++][0]==non[j]) 
-            {
-                sig=1;          
-                break;
-            }
-            sig=-1;
-        }
-        if(sig==-1)
-        {
-            cout<<"非终结符"<<non[j]<<"未使用推导！"<<endl;
-            return 0;
-        }
-        j++;
-    }
     return 1;
 }
- 
-Parser& Parser::DelSL()
-{
-    for(unsigned int i=1;i<non.size();i++)
-    {
-        for(unsigned int j=0;j<i;j++)
-        {
-            char Ai=content[i][0];
-            char Aj=content[j][0];
-            string Aistr=content[i];
-            int Ain=StrNum(Aistr);
-            string Ainew;
-            Ainew+=Ai;
-            Ainew+="->";
-            for(int k=1;k<=Ain;k++)
-            {
-                string Aitemp=GetSub(k,Aistr,'|');
-                string Ait;
-                if(Aitemp[0]==Aj)
-                {
-                    string Ajstr=content[j];
-                    int Ajn=StrNum(Ajstr);
-                    for(int w=1;w<=Ajn;w++)
-                    {
-                        string Ajtmp=GetSub(w,Ajstr,'|');
-                        string Aitmp=Aitemp;
-                        Aitmp.replace(0,1,Ajtmp);
-                        Ait+=Aitmp;
-                        Ait+='|';
-                    }
-                    Ait.erase(Ait.size()-1,1);
-                }
-                else Ait=Aitemp;
-                Ainew+=Ait;
-                Ainew+='|';
-            }
-            Ainew.erase(Ainew.size()-1,1);
-            if(Ainew!=Aistr) 
-                content[i]=Ainew;
-        }
-    }
-    return *this;
-}
- 
+  
 Parser& Parser::DelLeft(int i)
 {
     int n=StrNum(content[i]);
@@ -289,21 +165,9 @@ Parser& Parser::DelLeft(int i)
         {
             string tmp=GetSub(k,content[i],'|');
             if(z==tmp[0])   s=1;
-            if(Delchar(z,tmp).empty())
-            {
-                cout<<"文法句"<<content[i]<<"中含有无穷推导！"<<endl;
-                system("pause");
-                exit(0);
-            }
         }
     if(s==0) return *this;
     cout<<"文法句"<<content[i]<<"含有直接左递归,";
-    if(non.size()>=26) 
-    {
-        cerr<<"未能随机产生非终结符！退出程序"<<endl;
-        system("pause");
-        exit(0);
-    }
     while(1)
     {
         if(Findchar(c,non)==-1) break;
@@ -338,9 +202,9 @@ Parser& Parser::DelLeft(int i)
     next+='^';
     temp.erase(temp.size()-1,1);
     content[i]=temp;
-    number=number+1;
-    content[number]=end;
-    for(int j=number-1;j>i;j--)
+    num=num+1;
+    content[num]=end;
+    for(int j=num-1;j>i;j--)
         content[j]=content[j-1];
     content[i+1]=next;
     return *this;
@@ -461,7 +325,7 @@ string Parser::Follow(char x)
             ch+=' ';
         }
         int i=0;
-        while(i<number)
+        while(i<num)
         {
             string q=content[i];
             unsigned int k=3;
@@ -477,7 +341,8 @@ string Parser::Follow(char x)
                         if(Findchar('^',First(q[k+1]))!=-1)
                         {   
                             string follow_c =  Follow(c);
-                            if(ch!=follow_c&&ch.find(follow_c)==std::string::npos)  ch+=follow_c;
+                            if(ch!=follow_c&&ch.find(follow_c)==std::string::npos)  
+                                ch+=follow_c;
                         }
                     }
                     else if(k==q.size()-1)
@@ -556,7 +421,7 @@ char Parser::Pop()
     return x;
 }
  
-int Parser::Next(char x,char ip)
+int Parser::Mate(char x,char ip)
 {
     if(Findchar(x,ter)!=-1)
     {
@@ -590,72 +455,84 @@ Parser& Parser::Push(const string& rs)
     return *this;
 }
  
-int Parser::Display()
+int Parser::Analysis()
 {
     stack.append("$");
-    stack+=non[0];
-    cout<<"请输入分析串（请以'$'结束）：";
-    cin>>instack;
-    if(instack[instack.size()-1]!='$') instack+="$";
-    int bu=1,flag=0; 
-    char x=Top();
-    char c=Ip();
-    cout<<"步骤\t\t栈内容\t\t当前输入\t动作"<<endl;
-    while(x!='$')
-    {
-        x=Top();
-        c=Ip();
-        cout<<"["<<bu<<"]\t\t"<<stack<<"\t\t"<<instack<<"\t\t";
-        if(Findchar(x,ter)!=-1)
-        {
-            if(Next(x,c)) cout<<"匹配"<<c<<endl;
-            else
-            {
-                cout<<"出错(终结符不能正确匹配)！"<<endl;
-                flag=1;
-                if(x==')') Pop();
-                else instack.erase(0,1);
-            }
-        }
-        else if(Findchar(x,non)!=-1)
-        {
-            int idf=Findchar(x,non);
-            int idz=Findchar(c,ter);
-            if(idz==-1) idz=int(ter.size());
-            string temp=table[idf][idz];
-            if(temp.empty()) 
-            {
-                cout<<"出错（"<<c<<"不属于FIRST("<<x<<")）！"<<endl;
-                flag=1;
-                instack.erase(0,1);
-            }
-            else
-            {
-                Pop();
-                if(temp!="^")   
-                {
-                    Push(temp);
-                    cout<<x<<"->"<<temp<<endl;
-                }
-                else cout<<x<<"->"<<temp<<endl;
+	char chose;
+	cout<<"是否输入分析串(y or n):";
+	cin>>chose;
+	while(chose=='y')
+	{
+		stack+=non[0];
+		cout<<"请输入分析串<退出(q)>：";
+		cin>>instack;
+		if (instack=="q") exit(0);
+		if(instack[instack.size()-1]!='$') instack+="$";
+		int k=1,flag=0; 
+		char x=Top();
+		char c=Ip();
+		cout<<"分析栈\t当前输入\t动作"<<endl;
+		while(x!='$')
+		{
+			x=Top();
+			c=Ip();
+			cout<<stack<<"\t"<<instack<<"\t\t";
+			if(Findchar(x,ter)!=-1)
+			{
+				if(Mate(x,c))
+				{ 
+					k++;
+					cout<<"匹配"<<c<<endl;
+				}
+				else
+				{
+					cout<<"["<<k<<"]出错(终结符不匹配)！"<<endl;
+					flag=1;
+					if(x==')') Pop();
+					else instack.erase(0,1);
+                    k++;
+				}
+			}
+			else if(Findchar(x,non)!=-1)
+			{
+				int idf=Findchar(x,non);
+				int idz=Findchar(c,ter);
+				if(idz==-1) idz=int(ter.size());
+				string temp=table[idf][idz];
+				if(temp.empty()) 
+				{
+					cout<<"["<<k<<"]出错（"<<c<<"不属于FIRST("<<x<<")）！"<<endl;
+					flag=1;
+					instack.erase(0,1);
+                    k++;
+				}
+				else
+				{
+					Pop();
+					if(temp!="^")   
+					{
+						Push(temp);
+						cout<<x<<"->"<<temp<<endl;
+					}
+					else cout<<x<<"->"<<temp<<endl;
 
-            }
-            
-        }
-        else if(x=='$'&&c=='$')
-        {
-            if(flag==0) cout<<"正确结束！"<<endl;
-            else cout<<"couwu"<<endl;
-        }
-        else
-        {
-            cout<<"出错(未能识别的字符)！"<<endl;
-            flag=1;
-            instack.erase(0,1);
-        }
-        bu++;
-    }
-    return 1;
+				}
+				
+			}
+			else if(x=='$'&&c=='$')
+			{
+				if(flag==0) cout<<"正确"<<endl;
+				else cout<<"错误"<<endl;
+			}
+			else
+			{
+				cout<<"["<<k<<"]出错(未能识别的字符)！"<<endl;
+				flag=1;
+				instack.erase(0,1);
+                k++;
+			}
+		}
+	}
 }
  
 int main()
@@ -663,6 +540,6 @@ int main()
     Parser LL1;
     cin>>LL1;
     cout<<LL1;
-    LL1.Display();
+    LL1.Analysis();
     return 0;
 }
